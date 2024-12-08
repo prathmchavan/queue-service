@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: api-server
+    env: node
+    buildCommand: "npm install && npm run build"
+    startCommand: "npm start"
+    envVars:
+      - key: REDIS_HOST
+        value: ${REDIS_URL}
+      - key: PORT
+        value: 8000
+
+  - type: worker
+    name: worker
+    env: node
+    buildCommand: "npm install && npm run build"
+    startCommand: "node build/queue/worker.js"
+    envVars:
+      - key: REDIS_HOST
+        value: ${REDIS_URL}
+
+databases:
+  - name: redis
+    plan: free
